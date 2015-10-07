@@ -17,12 +17,13 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     return function (css) {
         css.walkRules(function (rule) {
             rule.walkDecls(PROP_INLINE_END, function (decl) {
-                rule.insertAfter(decl, {
+                decl.replaceWith(decl.clone({
                     prop: decl.prop.replace(
                         PROP_INLINE_END,
-                        getEndSideForDir(opts.dir)),
+                        getEndSideForDir(opts.dir)
+                    ),
                     value: decl.value
-                });
+                }));
             });
         });
     };
