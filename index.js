@@ -4,18 +4,22 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     var DIR_LTR = 'ltr';
     var DIR_RTL = 'rtl';
-    var PROP_REGEX = /inline-((end)|(start))/i;
+    var PROP_REGEX = /(?:(inline)|(block))-(?:(end)|(start))/i;
 
     var PROPERTY_MAP = {};
 
     PROPERTY_MAP[DIR_LTR] = {
-        start: 'left',
-        end:   'right'
+        'block-start':  'left',
+        'block-end':    'right',
+        'inline-start': 'left',
+        'inline-end':   'right'
     };
 
     PROPERTY_MAP[DIR_RTL] = {
-        start: 'right',
-        end:   'left'
+        'block-start':  'right',
+        'block-end':    'left',
+        'inline-start': 'right',
+        'inline-end':   'left'
     };
 
     opts = opts || {
@@ -28,7 +32,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     function getUpdatedPropertyName(property) {
         var matches  = PROP_REGEX.exec(property);
-        var location = matches[1];
+        var location = matches[0];
 
         return property.replace(
             PROP_REGEX,

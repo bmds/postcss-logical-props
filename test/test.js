@@ -50,9 +50,13 @@ function runTestVariants(property) {
 
     runVariant(property, 'inline', 'start', 'ltr');
     runVariant(property, 'inline', 'end', 'ltr');
+    runVariant(property, 'block', 'start', 'ltr');
+    runVariant(property, 'block', 'end', 'ltr');
 
     runVariant(property, 'inline', 'start', 'rtl');
     runVariant(property, 'inline', 'end', 'rtl');
+    runVariant(property, 'block', 'start', 'rtl');
+    runVariant(property, 'block', 'end', 'rtl');
 }
 
 describe('postcss-logical-props', function () {

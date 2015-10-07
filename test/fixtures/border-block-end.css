@@ -1,0 +1,15 @@
+.block1 {
+	border-block-end: medium dashed blue;
+}
+
+.block2 {
+	border-block-end-color: #fff;
+}
+
+.block3 {
+	border-block-end-style: dashed;
+}
+
+.block4 {
+	border-block-end-width: 2px;
+}
