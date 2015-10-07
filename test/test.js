@@ -62,6 +62,7 @@ function runTestVariants(property) {
 describe('postcss-logical-props', function () {
 
     runTestVariants('border-{variant}');
+    runTestVariants('margin-{variant}');
 
 });
 
