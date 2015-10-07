@@ -2,9 +2,12 @@ var postcss = require('postcss');
 
 module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
-    var DIR_LTR = 'ltr';
-    var DIR_RTL = 'rtl';
-    var PROP_REGEX = /(?:(inline)|(block))-(?:(end)|(start))/i;
+    var DIR_LTR        = 'ltr';
+    var DIR_RTL        = 'rtl';
+    var POSITION_REGEX = /(?:(inline)|(block))-(?:(end)|(start))/i;
+    /*eslint-disable */
+    var PROP_REGEX     = /(?:(margin)|(border)|(padding))-(?:(inline)|(block))-(?:(end)|(start))/i;
+    /*eslint-enable */
 
     var PROPERTY_MAP = {};
 
@@ -31,11 +34,11 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     }
 
     function getUpdatedPropertyName(property) {
-        var matches  = PROP_REGEX.exec(property);
+        var matches  = POSITION_REGEX.exec(property);
         var location = matches[0];
 
         return property.replace(
-            PROP_REGEX,
+            POSITION_REGEX,
             getPropertyReplacement(location)
         );
     }

@@ -1,0 +1,13 @@
+.block1 {
+	padding-block-end: 10px;      /* An absolute length */
+	padding-block-end: 1em;       /* A length relative to the text size */
+	padding-block-end: 5%;        /* A padding relative to the nearest block container's width */
+
+	/* Keyword values */
+	padding-block-end: auto;
+
+	/* Global values */
+	padding-block-end: inherit;
+	padding-block-end: initial;
+	padding-block-end: unset;
+}

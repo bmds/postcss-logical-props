@@ -1,0 +1,13 @@
+.block1 {
+	margin-inline-end: 10px;      /* An absolute length */
+	margin-inline-end: 1em;       /* A length relative to the text size */
+	margin-inline-end: 5%;        /* A margin relative to the nearest block container's width */
+
+	/* Keyword values */
+	margin-inline-end: auto;
+
+	/* Global values */
+	margin-inline-end: inherit;
+	margin-inline-end: initial;
+	margin-inline-end: unset;
+}
