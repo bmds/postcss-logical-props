@@ -48,8 +48,10 @@ function runVariant(property, mode, side, direction) {
 
 function runTestVariants(property) {
 
+    runVariant(property, 'inline', 'start', 'ltr');
     runVariant(property, 'inline', 'end', 'ltr');
 
+    runVariant(property, 'inline', 'start', 'rtl');
     runVariant(property, 'inline', 'end', 'rtl');
 }
 
