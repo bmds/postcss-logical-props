@@ -3,28 +3,49 @@ var postcss = require('postcss');
 module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     var DIR_LTR = 'ltr';
-    // var DIR_RTL = 'rtl';
-    var PROP_INLINE_END = /inline-end/g;
+    var DIR_RTL = 'rtl';
+    var PROP_REGEX = /inline-((end)|(start))/i;
+
+    var PROPERTY_MAP = {};
+
+    PROPERTY_MAP[DIR_LTR] = {
+        start: 'left',
+        end:   'right'
+    };
+
+    PROPERTY_MAP[DIR_RTL] = {
+        start: 'right',
+        end:   'left'
+    };
 
     opts = opts || {
         dir: DIR_LTR
     };
 
-    function getEndSideForDir(dir) {
-        return dir === DIR_LTR ? 'right' : 'left';
+    function getPropertyReplacement(position) {
+        return PROPERTY_MAP[opts.dir][position];
+    }
+
+    function getUpdatedPropertyName(property) {
+        var matches  = PROP_REGEX.exec(property);
+        var location = matches[1];
+
+        return property.replace(
+            PROP_REGEX,
+            getPropertyReplacement(location)
+        );
+    }
+
+    function handleDeclaration(decl) {
+        decl.replaceWith(decl.clone({
+            prop:  getUpdatedPropertyName(decl.prop),
+            value: decl.value
+        }));
     }
 
     return function (css) {
         css.walkRules(function (rule) {
-            rule.walkDecls(PROP_INLINE_END, function (decl) {
-                decl.replaceWith(decl.clone({
-                    prop: decl.prop.replace(
-                        PROP_INLINE_END,
-                        getEndSideForDir(opts.dir)
-                    ),
-                    value: decl.value
-                }));
-            });
+            rule.walkDecls(PROP_REGEX, handleDeclaration);
         });
     };
 });
