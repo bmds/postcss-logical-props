@@ -59,4 +59,10 @@ postcss([ require('postcss-logical-props') ])
 
   Determines if the stylesheet will be modified to sit in an ltr or rtl environment
 
+### To add
+
+* padding-*
+* margin-*
+* offset-* -> left | right
+
 See [PostCSS] docs for examples for your environment.
