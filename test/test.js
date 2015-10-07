@@ -38,39 +38,27 @@ function runTest(fixtureName, mode, done) {
     }, done);
 }
 
+function runVariant(property, mode, side, direction) {
+    property = property.replace('{variant}', mode + '-' + side);
+
+    it('Converts ' + property + ' for ' + direction, function (done) {
+        runTest(property, direction, done);
+    });
+}
+
+function runTestVariants(property) {
+
+    runVariant(property, 'inline', 'end', 'ltr');
+
+    runVariant(property, 'inline', 'end', 'rtl');
+}
+
 describe('postcss-logical-props', function () {
 
-    it('Converts border-inline-end for ltr', function (done) {
-        runTest('border-inline-end', 'ltr', done);
-    });
-
-    it('Converts border-inline-end for rtl', function (done) {
-        runTest('border-inline-end', 'rtl', done);
-    });
-
-    it('Converts border-inline-end-color for ltr', function (done) {
-        runTest('border-inline-end-color', 'ltr', done);
-    });
-
-    it('Converts border-inline-end-color for rtl', function (done) {
-        runTest('border-inline-end-color', 'rtl', done);
-    });
-
-    it('Converts border-inline-end-style for ltr', function (done) {
-        runTest('border-inline-end-style', 'ltr', done);
-    });
-
-    it('Converts border-inline-end-style for rtl', function (done) {
-        runTest('border-inline-end-style', 'rtl', done);
-    });
-
-    it('Converts border-inline-end-width for ltr', function (done) {
-        runTest('border-inline-end-width', 'ltr', done);
-    });
-
-    it('Converts border-inline-end-width for rtl', function (done) {
-        runTest('border-inline-end-width', 'rtl', done);
-    });
+    runTestVariants('border-{variant}');
+    runTestVariants('border-{variant}-color');
+    runTestVariants('border-{variant}-style');
+    runTestVariants('border-{variant}-width');
 
 });
 
