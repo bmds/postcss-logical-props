@@ -40,6 +40,30 @@ function runTest(fixtureName, mode, done) {
 
 describe('postcss-logical-props', function () {
 
+    it('Converts border-inline-end for ltr', function (done) {
+        runTest('border-inline-end', 'ltr', done);
+    });
+
+    it('Converts border-inline-end for rtl', function (done) {
+        runTest('border-inline-end', 'rtl', done);
+    });
+
+    it('Converts border-inline-end-color for ltr', function (done) {
+        runTest('border-inline-end-color', 'ltr', done);
+    });
+
+    it('Converts border-inline-end-color for rtl', function (done) {
+        runTest('border-inline-end-color', 'rtl', done);
+    });
+
+    it('Converts border-inline-end-style for ltr', function (done) {
+        runTest('border-inline-end-style', 'ltr', done);
+    });
+
+    it('Converts border-inline-end-style for rtl', function (done) {
+        runTest('border-inline-end-style', 'rtl', done);
+    });
+
     it('Converts border-inline-end-width for ltr', function (done) {
         runTest('border-inline-end-width', 'ltr', done);
     });
