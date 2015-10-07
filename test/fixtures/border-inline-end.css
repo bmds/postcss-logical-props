@@ -1,3 +1,15 @@
-div {
+.block1 {
 	border-inline-end: medium dashed blue;
+}
+
+.block2 {
+	border-inline-end-color: #fff;
+}
+
+.block3 {
+	border-inline-end-style: dashed;
+}
+
+.block4 {
+	border-inline-end-width: 2px;
 }
