@@ -2,23 +2,28 @@ var postcss = require('postcss');
 
 module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
-    var DIR_LTR        = 'ltr';
-    var DIR_RTL        = 'rtl';
-    var POSITION_REGEX = /(?:(inline)|(block))-(?:(end)|(start))/i;
-    /*eslint-disable */
-    var PROP_REGEX     = /(?:(margin)|(border)|(padding))-(?:(inline)|(block))-(?:(end)|(start))/i;
-    /*eslint-enable */
+    var _DIR_LTR = 'ltr';
+    var _DIR_RTL = 'rtl';
+
+    var _REGEX_BASE = {
+        location: '(?:(inline)|(block))-(?:(end)|(start))',
+        box:      '(?:(margin)|(border)|(padding))-'
+    };
+    var _REGEX = {
+        location: new RegExp(_REGEX_BASE.location, 'i'),
+        boxModel: new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i')
+    };
 
     var PROPERTY_MAP = {};
 
-    PROPERTY_MAP[DIR_LTR] = {
+    PROPERTY_MAP[_DIR_LTR] = {
         'block-start':  'left',
         'block-end':    'right',
         'inline-start': 'left',
         'inline-end':   'right'
     };
 
-    PROPERTY_MAP[DIR_RTL] = {
+    PROPERTY_MAP[_DIR_RTL] = {
         'block-start':  'right',
         'block-end':    'left',
         'inline-start': 'right',
@@ -26,7 +31,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     };
 
     opts = opts || {
-        dir: DIR_LTR
+        dir: _DIR_LTR
     };
 
     function getPropertyReplacement(position) {
@@ -34,11 +39,11 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     }
 
     function getUpdatedPropertyName(property) {
-        var matches  = POSITION_REGEX.exec(property);
+        var matches  = _REGEX.location.exec(property);
         var location = matches[0];
 
         return property.replace(
-            POSITION_REGEX,
+            _REGEX.location,
             getPropertyReplacement(location)
         );
     }
@@ -52,7 +57,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     return function (css) {
         css.walkRules(function (rule) {
-            rule.walkDecls(PROP_REGEX, handleDeclaration);
+            rule.walkDecls(_REGEX.boxModel, handleDeclaration);
         });
     };
 });
