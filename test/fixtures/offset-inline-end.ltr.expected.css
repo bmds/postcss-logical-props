@@ -1,0 +1,16 @@
+.block1 {
+	/* <length> values */
+	right: 3px;
+	right: 2.4em;
+
+	/* <percentage>s of the width or height of the containing block */
+	right: 10%;
+
+	/* Keyword value */
+	right: auto;
+
+	/* Global values */
+	right: inherit;
+	right: initial;
+	right: unset;
+}

@@ -1,0 +1,16 @@
+.block1 {
+	/* <length> values */
+	offset-inline-start: 3px;
+	offset-inline-start: 2.4em;
+
+	/* <percentage>s of the width or height of the containing block */
+	offset-inline-start: 10%;
+
+	/* Keyword value */
+	offset-inline-start: auto;
+
+	/* Global values */
+	offset-inline-start: inherit;
+	offset-inline-start: initial;
+	offset-inline-start: unset;
+}

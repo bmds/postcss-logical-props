@@ -11,7 +11,8 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     };
     var _REGEX = {
         location: new RegExp(_REGEX_BASE.location, 'i'),
-        boxModel: new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i')
+        boxModel: new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i'),
+        position: new RegExp('offset-' + _REGEX_BASE.location, 'i')
     };
 
     var PROPERTY_MAP = {};
@@ -38,7 +39,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         return PROPERTY_MAP[opts.dir][position];
     }
 
-    function getUpdatedPropertyName(property) {
+    function getUpdatedPartialPropertyName(property) {
         var matches  = _REGEX.location.exec(property);
         var location = matches[0];
 
@@ -48,16 +49,32 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         );
     }
 
-    function handleDeclaration(decl) {
+    function getUpdatedFullPropertyName(property) {
+        var matches  = _REGEX.location.exec(property);
+        var location = matches[0];
+
+        return getPropertyReplacement(location);
+    }
+
+    function replaceDeclaration(decl, name) {
         decl.replaceWith(decl.clone({
-            prop:  getUpdatedPropertyName(decl.prop),
+            prop:  name,
             value: decl.value
         }));
     }
 
+    function handleFullDeclaration(decl) {
+        replaceDeclaration(decl, getUpdatedFullPropertyName(decl.prop));
+    }
+
+    function handlePartialDeclaration(decl) {
+        replaceDeclaration(decl, getUpdatedPartialPropertyName(decl.prop));
+    }
+
     return function (css) {
         css.walkRules(function (rule) {
-            rule.walkDecls(_REGEX.boxModel, handleDeclaration);
+            rule.walkDecls(_REGEX.boxModel, handlePartialDeclaration);
+            rule.walkDecls(_REGEX.position, handleFullDeclaration);
         });
     };
 });
