@@ -7,12 +7,14 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     var _REGEX_BASE = {
         location: '(?:(inline)|(block))-(?:(end)|(start))',
-        box:      '(?:(margin)|(border)|(padding))-'
+        box:      '(?:(margin)|(border)|(padding))-',
+        property: '(?:(float)|(clear))'
     };
     var _REGEX = {
         location: new RegExp(_REGEX_BASE.location, 'i'),
         boxModel: new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i'),
-        position: new RegExp('offset-' + _REGEX_BASE.location, 'i')
+        position: new RegExp('offset-' + _REGEX_BASE.location, 'i'),
+        property: new RegExp(_REGEX_BASE.property, 'i')
     };
 
     var PROPERTY_MAP = {};
@@ -39,7 +41,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         return PROPERTY_MAP[opts.dir][position];
     }
 
-    function getUpdatedPartialPropertyName(property) {
+    function getPartialReplacement(property) {
         var matches  = _REGEX.location.exec(property);
         var location = matches[0];
 
@@ -49,7 +51,7 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         );
     }
 
-    function getUpdatedFullPropertyName(property) {
+    function getFullReplacement(property) {
         var matches  = _REGEX.location.exec(property);
         var location = matches[0];
 
@@ -63,18 +65,30 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         }));
     }
 
+    function replaceValue(decl, value) {
+        decl.replaceWith(decl.clone({
+            prop:  decl.prop,
+            value: value
+        }));
+    }
+
     function handleFullDeclaration(decl) {
-        replaceDeclaration(decl, getUpdatedFullPropertyName(decl.prop));
+        replaceDeclaration(decl, getFullReplacement(decl.prop));
     }
 
     function handlePartialDeclaration(decl) {
-        replaceDeclaration(decl, getUpdatedPartialPropertyName(decl.prop));
+        replaceDeclaration(decl, getPartialReplacement(decl.prop));
+    }
+
+    function handleValue(decl) {
+        replaceValue(decl, getFullReplacement(decl.value));
     }
 
     return function (css) {
         css.walkRules(function (rule) {
             rule.walkDecls(_REGEX.boxModel, handlePartialDeclaration);
             rule.walkDecls(_REGEX.position, handleFullDeclaration);
+            rule.walkDecls(_REGEX.property, handleValue);
         });
     };
 });

@@ -38,12 +38,15 @@ function runTest(fixtureName, mode, done) {
     }, done);
 }
 
-function runVariant(property, mode, side, direction) {
-    property = property.replace('{variant}', mode + '-' + side);
-
+function declareTest(property, direction) {
     it('Converts ' + property + ' for ' + direction, function (done) {
         runTest(property, direction, done);
     });
+}
+
+function runVariant(property, mode, side, direction) {
+    property = property.replace('{variant}', mode + '-' + side);
+    declareTest(property, direction);
 }
 
 function runTestVariants(property) {
@@ -59,11 +62,18 @@ function runTestVariants(property) {
     runVariant(property, 'block', 'end', 'rtl');
 }
 
+function runSimple(property) {
+    declareTest(property, 'ltr');
+    declareTest(property, 'rtl');
+}
+
 describe('postcss-logical-props', function () {
 
     runTestVariants('border-{variant}');
     runTestVariants('margin-{variant}');
     runTestVariants('offset-{variant}');
 
+    runSimple('float');
+    runSimple('clear');
 });
 
