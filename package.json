@@ -1,6 +1,6 @@
 {
   "name": "postcss-logical-props",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "PostCSS plugin Converts CSS Logical Property declarations to vanilla CSS in either ltr or rtl",
   "keywords": [
     "postcss",
@@ -16,7 +16,8 @@
   },
   "homepage": "https://github.com/bmds/postcss-logical-props",
   "dependencies": {
-    "postcss": "^5.0.2"
+    "postcss": "^5.0.2",
+    "merge": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",

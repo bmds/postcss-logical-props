@@ -1,4 +1,5 @@
 var postcss = require('postcss');
+var merge   = require('merge');
 
 module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
@@ -33,9 +34,10 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         'inline-end':   'left'
     };
 
-    opts = opts || {
-        dir: _DIR_LTR
-    };
+    opts = merge({
+        dir:     _DIR_LTR,
+        replace: true
+    }, opts);
 
     function getPropertyReplacement(position) {
         return PROPERTY_MAP[opts.dir][position];
@@ -60,28 +62,51 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
 
     function replaceDeclaration(decl, name) {
         decl.replaceWith(decl.clone({
-            prop:  name,
-            value: decl.value
+            prop: name
         }));
     }
 
-    function replaceValue(decl, value) {
+    function replaceValue(decl, val) {
         decl.replaceWith(decl.clone({
-            prop:  decl.prop,
-            value: value
+            value: val
         }));
+    }
+
+    function addDeclaration(decl, name) {
+        decl.cloneBefore({
+            prop: name
+        });
+    }
+
+    function addValue(decl, val) {
+        decl.cloneBefore({
+            value: val
+        });
+    }
+
+    function handleDeclarationChange(decl, name) {
+        if(opts.replace) {
+            replaceDeclaration(decl, name);
+        } else {
+            addDeclaration(decl, name);
+        }
     }
 
     function handleFullDeclaration(decl) {
-        replaceDeclaration(decl, getFullReplacement(decl.prop));
+        handleDeclarationChange(decl, getFullReplacement(decl.prop));
     }
 
     function handlePartialDeclaration(decl) {
-        replaceDeclaration(decl, getPartialReplacement(decl.prop));
+        handleDeclarationChange(decl, getPartialReplacement(decl.prop));
     }
 
     function handleValue(decl) {
-        replaceValue(decl, getFullReplacement(decl.value));
+        var value = getFullReplacement(decl.value);
+        if(opts.replace) {
+            replaceValue(decl, value);
+        } else {
+            addValue(decl, value);
+        }
     }
 
     return function (css) {

@@ -32,15 +32,15 @@ function test(input, output, opts, done) {
     });
 }
 
-function runTest(fixtureName, mode, done) {
-    test(fixtureBase(fixtureName), fixtureExpected(fixtureName, mode), {
-        dir: mode
-    }, done);
+function runTest(fixtureName, options, done) {
+    test(fixtureBase(fixtureName), fixtureExpected(fixtureName, options.dir), options, done);
 }
 
 function declareTest(property, direction) {
     it('Converts ' + property + ' for ' + direction, function (done) {
-        runTest(property, direction, done);
+        runTest(property, {
+            dir: direction
+        }, done);
     });
 }
 
@@ -75,5 +75,13 @@ describe('postcss-logical-props', function () {
 
     runSimple('float');
     runSimple('clear');
+
+    it('Adds declarations rather than replacing them', function (done) {
+        runTest('add', {
+            dir:     'ltr',
+            replace: false
+        }, done);
+    });
+
 });
 
