@@ -10,6 +10,8 @@ It is currently very simplistic in it's determination of how to apply the proper
 
 Should be expected to change as the related [spec] is still in Editors Draft status.
 
+Currently treats `inline-*` and `block-*` identically.
+
 ## Example transform
 
 ```css
@@ -21,12 +23,12 @@ Should be expected to change as the related [spec] is still in Editors Draft sta
 }
 
 .block2 {
-    inline-start: 20px;
+    offset-block-start: 20px;
     position: absolute;
 }
 ```
 
-### LTR version
+#### LTR version
 ```css
 .block1 {
     clear: right;
@@ -41,7 +43,7 @@ Should be expected to change as the related [spec] is still in Editors Draft sta
 }
 ```
 
-### RTL version
+#### RTL version
 ```css
 .block1 {
     clear: left;
@@ -82,5 +84,43 @@ postcss([ logicalProps({
     *Version:* 0.0.2 and above
 
     If true declarations will be replaced by the converted version. If false a new declaration will be added above them
+
+### Supported declarations
+
+* **Border**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `border-block-start: 1px solid #ddd;`<br />
+    *ltr:* `border-left: 1px solid #ddd;`<br />
+    *rtl:* `border-right: 1px solid #ddd;`
+
+* **Clear**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `clear: inline-start;`<br />
+    *ltr:* `clear: left`<br />
+    *rtl:* `clear: right`
+
+* **Float**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `float: inline-start;`<br />
+    *ltr:* `float: left`<br />
+    *rtl:* `float: right`
+
+* **Margin**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `margin-block-end: 2rem;`<br />
+    *ltr:* `margin-right: 2rem;`<br />
+    *rtl:* `margin-left: 2rem;`
+
+* **Offset**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `offset-block-start: 100%;`<br />
+    *ltr:* `left: 100%;`<br />
+    *rtl:* `right: 100%;`
+
+* **Padding**<br />
+    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *example* `padding-block-end: 0;`<br />
+    *ltr:* `padding-right: 0;`<br />
+    *rtl:* `padding-left: 0;`
 
 See [PostCSS] docs for examples for your environment.
