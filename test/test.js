@@ -33,7 +33,12 @@ function test(input, output, opts, done) {
 }
 
 function runTest(fixtureName, options, done) {
-    test(fixtureBase(fixtureName), fixtureExpected(fixtureName, options.dir), options, done);
+    test(
+        fixtureBase(fixtureName),
+        fixtureExpected(fixtureName, options.dir),
+        options,
+        done
+    );
 }
 
 function declareTest(property, direction) {
