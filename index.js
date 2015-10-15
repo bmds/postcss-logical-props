@@ -7,31 +7,29 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
     var _DIR_RTL = 'rtl';
 
     var _REGEX_BASE = {
-        location: '(?:(inline)|(block))-(?:(end)|(start))',
-        box:      '(?:(margin)|(border)|(padding))-',
-        property: '(?:(float)|(clear))'
+        location:    '(?:(inline)|(block))-(?:(end)|(start))',
+        replacement: '((?:(inline)|(block))-)?(?:(end)|(start))',
+        box:         '(?:(margin)|(border)|(padding))-',
+        property:    '(?:(float)|(clear)|(text-align))'
     };
     var _REGEX = {
-        location: new RegExp(_REGEX_BASE.location, 'i'),
-        boxModel: new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i'),
-        position: new RegExp('offset-' + _REGEX_BASE.location, 'i'),
-        property: new RegExp(_REGEX_BASE.property, 'i')
+        location:    new RegExp(_REGEX_BASE.location, 'i'),
+        replacement: new RegExp(_REGEX_BASE.replacement, 'i'),
+        boxModel:    new RegExp(_REGEX_BASE.box + _REGEX_BASE.location, 'i'),
+        position:    new RegExp('offset-' + _REGEX_BASE.location, 'i'),
+        property:    new RegExp(_REGEX_BASE.property, 'i')
     };
 
     var PROPERTY_MAP = {};
 
     PROPERTY_MAP[_DIR_LTR] = {
-        'block-start':  'left',
-        'block-end':    'right',
-        'inline-start': 'left',
-        'inline-end':   'right'
+        start: 'left',
+        end:   'right'
     };
 
     PROPERTY_MAP[_DIR_RTL] = {
-        'block-start':  'right',
-        'block-end':    'left',
-        'inline-start': 'right',
-        'inline-end':   'left'
+        start: 'right',
+        end:   'left'
     };
 
     opts = merge({
@@ -39,25 +37,33 @@ module.exports = postcss.plugin('postcss-logical-props', function (opts) {
         replace: true
     }, opts);
 
-    function getPropertyReplacement(position) {
+    function getPropertyReplacement(matches) {
+        var position = matches[4] || matches[5];
+
         return PROPERTY_MAP[opts.dir][position];
     }
 
     function getPartialReplacement(property) {
-        var matches  = _REGEX.location.exec(property);
-        var location = matches[0];
+        var matches  = _REGEX.replacement.exec(property);
 
-        return property.replace(
-            _REGEX.location,
-            getPropertyReplacement(location)
-        );
+        if(matches !== null) {
+            return property.replace(
+                _REGEX.location,
+                getPropertyReplacement(matches)
+            );
+        }
+
+        return property;
     }
 
     function getFullReplacement(property) {
-        var matches  = _REGEX.location.exec(property);
-        var location = matches[0];
+        var matches  = _REGEX.replacement.exec(property);
 
-        return getPropertyReplacement(location);
+        if(matches !== null) {
+            return getPropertyReplacement(matches);
+        }
+
+        return property;
     }
 
     function replaceDeclaration(decl, name) {

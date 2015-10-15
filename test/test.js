@@ -80,6 +80,7 @@ describe('postcss-logical-props', function () {
 
     runSimple('float');
     runSimple('clear');
+    runSimple('text-align');
 
     it('Adds declarations rather than replacing them', function (done) {
         runTest('add', {
