@@ -123,4 +123,10 @@ postcss([ logicalProps({
     *ltr:* `padding-right: 0;`<br />
     *rtl:* `padding-left: 0;`
 
+* **Text align**<br />
+    *modes* `start` || `end`<br />
+    *example* `text-align: start;`<br />
+    *ltr:* `text-align: left;`<br />
+    *rtl:* `text-align: right;`
+
 See [PostCSS] docs for examples for your environment.
