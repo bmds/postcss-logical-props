@@ -95,14 +95,14 @@ postcss([ logicalProps({
     *specification:* [3.3. Logical Padding and Border](https://drafts.csswg.org/css-logical-props/#border-padding)
 
 * **Clear**<br />
-    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *modes* `inline-start` || `inline-end`<br />
     *example* `clear: inline-start;`<br />
     *ltr:* `clear: left`<br />
     *rtl:* `clear: right`<br />
     *specification:* [1.2. Logical Values for the float and clear Properties](https://drafts.csswg.org/css-logical-props/#float-clear)
 
 * **Float**<br />
-    *modes* `block-start` || `block-end` || `inline-start` || `inline-end`<br />
+    *modes* `inline-start` || `inline-end`<br />
     *example* `float: inline-start;`<br />
     *ltr:* `float: left`<br />
     *rtl:* `float: right`<br />
